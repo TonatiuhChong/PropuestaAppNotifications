@@ -1,8 +1,13 @@
 package com.example.tchong.propuestaappnotifications;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,8 +32,22 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                  //      .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0,intent, 0);
+
+                NotificationCompat.Builder mBuilder;
+                NotificationManager mNotifyMgr =(NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+                mBuilder =new NotificationCompat.Builder(getApplicationContext())
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle("Agenda-Citatorio")
+                        .setContentText("Firmar contrato con Jesus Jimenez para Kia FORYE 2019")
+                        .setVibrate(new long[] {100, 250, 100, 500})
+                        .setAutoCancel(true);
+                mNotifyMgr.notify(1, mBuilder.build());
+
+
             }
         });
 
@@ -79,17 +98,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentManager fm= getSupportFragmentManager();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            fm.beginTransaction().replace(R.id.escenario, new PrincipalFragment()).commit();
         } else if (id == R.id.nav_gallery) {
-
+            fm.beginTransaction().replace(R.id.escenario, new AgendaFragment()).commit();
         } else if (id == R.id.nav_slideshow) {
-
+            fm.beginTransaction().replace(R.id.escenario, new ActividadFragment()).commit();
         } else if (id == R.id.nav_manage) {
-
+            fm.beginTransaction().replace(R.id.escenario, new TareaFragment()).commit();
         } else if (id == R.id.nav_share) {
-
+            fm.beginTransaction().replace(R.id.escenario, new SoporteFragment()).commit();
         } else if (id == R.id.nav_send) {
 
         }
